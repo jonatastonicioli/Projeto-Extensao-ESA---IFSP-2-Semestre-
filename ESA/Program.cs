@@ -1,4 +1,3 @@
-using ESA.Data;
 using ESA.Forms;
 
 namespace ESA;
@@ -10,23 +9,22 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
+        // Um único objeto Cadastro (todo o acesso ao banco) é criado aqui e
+        // compartilhado, por referência, com todas as janelas.
+        Cadastro cadastro = new Cadastro();
+
         try
         {
-            Database.TestarConexao();
+            cadastro.testarConexao();
         }
         catch (Exception ex)
         {
-            MessageBox.Show(
-                "Não foi possível conectar ao MySQL.\n\n" + ex.Message +
-                "\n\nVerifique se o MySQL está rodando, se o script Database/schema.sql foi executado e a string de conexão (variável de ambiente ESA_MYSQL_CONN).",
-                "ESA - Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Ferramentas.mostraErro("Não foi possível acessar o banco de dados.\n\n" + ex.Message +
+                "\n\nConfira se o MySQL está ligado, se o script Database/schema.sql já foi executado " +
+                "e se a senha (pwd) em Cadastro.cs é a do seu MySQL.");
             return;
         }
 
-        // Os repositórios são criados uma única vez e compartilhados (por referência) entre as janelas.
-        var alunos = new AlunoRepository();
-        var pontuacoes = new PontuacaoRepository();
-
-        Application.Run(new FormPrincipal(alunos, pontuacoes));
+        Application.Run(new FormPrincipal(cadastro));
     }
 }

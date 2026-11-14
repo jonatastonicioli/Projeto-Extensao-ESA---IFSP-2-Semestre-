@@ -1,66 +1,48 @@
-using ESA.Data;
+using System.Data;
 using ESA.Models;
-using MySql.Data.MySqlClient;
 
 namespace ESA.Forms;
 
-/// <summary>RF-08: ranking geral ordenado pela média.</summary>
+/// <summary>RF-08: ranking dos competidores de uma modalidade em uma edição.</summary>
 public partial class FormRanking : Form
 {
-    private readonly AlunoRepository _alunos;
-    private readonly PontuacaoRepository _pontuacoes;
+    private Cadastro cadastro;
 
-    public FormRanking(AlunoRepository alunos, PontuacaoRepository pontuacoes)
+    public FormRanking(Cadastro cadastro)
     {
         InitializeComponent();
-        _alunos = alunos;
-        _pontuacoes = pontuacoes;
+        this.cadastro = cadastro;
     }
 
-    private void FormRanking_Load(object? sender, EventArgs e) => Carregar();
-
-    private void Carregar()
+    private void FormRanking_Load(object? sender, EventArgs e)
     {
         try
         {
-            List<Aluno> alunos = _alunos.Listar();
-            if (alunos.Count == 0)
-            {
-                MessageBox.Show("Nenhum competidor cadastrado.", "ESA", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            // Calcula as métricas de cada aluno
-            var linhas = new List<(Aluno Aluno, Metricas Metricas)>();
-            foreach (Aluno a in alunos)
-                linhas.Add((a, Metricas.Calcular(_pontuacoes.ListarPorAluno(a.Id))));
-
-            // Maior média primeiro; quem não tem notas ("N/A") vai para o final
-            var ordenado = linhas
-                .OrderByDescending(l => l.Metricas.Quantidade > 0)
-                .ThenByDescending(l => l.Metricas.Media)
-                .ThenBy(l => l.Aluno.Nome)
-                .ToList();
-
-            var tabela = new System.Data.DataTable();
-            foreach (string c in new[] { "Pos", "Nome", "Média", "Maior", "Menor", "Peças" })
-                tabela.Columns.Add(c, typeof(string));
-
-            int pos = 1;
-            foreach (var l in ordenado)
-            {
-                if (l.Metricas.Quantidade > 0)
-                    tabela.Rows.Add(pos++.ToString(), l.Aluno.Nome, l.Metricas.Media.ToString("0.00"),
-                                    l.Metricas.Maior.ToString("0.00"), l.Metricas.Menor.ToString("0.00"),
-                                    l.Metricas.Quantidade.ToString());
-                else
-                    tabela.Rows.Add(pos++.ToString(), l.Aluno.Nome, "N/A", "N/A", "N/A", "0");
-            }
-            dgvRanking.DataSource = tabela;
+            cmbModalidade.DataSource = cadastro.listarModalidades();
+            cmbEdicao.DataSource = cadastro.listarEdicoes();
+            gerar(false);
         }
-        catch (MySqlException ex)
-        {
-            MessageBox.Show("Erro de banco de dados: " + ex.Message, "ESA", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
+    }
+
+    private void btnGerar_Click(object? sender, EventArgs e)
+    {
+        try { gerar(true); }
+        catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
+    }
+
+    private void gerar(bool avisar)
+    {
+        Item? modalidade = cmbModalidade.SelectedItem as Item;
+        Item? edicao = cmbEdicao.SelectedItem as Item;
+        if (modalidade == null || edicao == null) return;
+
+        // uma tabela nova a cada vez (o método gerarRanking acrescenta a coluna "Pos")
+        DataTable ranking = new DataTable();
+        cadastro.gerarRanking(ranking, modalidade.getId(), edicao.getId());
+        dgvRanking.DataSource = ranking;
+
+        if (avisar && ranking.Rows.Count == 0)
+            Ferramentas.mostraAviso("Nenhum competidor inscrito nesta modalidade e edição.");
     }
 }

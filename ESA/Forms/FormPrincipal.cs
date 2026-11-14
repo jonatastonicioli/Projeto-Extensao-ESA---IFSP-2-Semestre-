@@ -1,49 +1,27 @@
-using ESA.Data;
-
 namespace ESA.Forms;
 
-/// <summary>Janela principal: menu de navegação. Recebe os repositórios por referência.</summary>
+/// <summary>Janela principal: menu de navegação. Recebe o objeto Cadastro por referência.</summary>
 public partial class FormPrincipal : Form
 {
-    private readonly AlunoRepository _alunos;
-    private readonly PontuacaoRepository _pontuacoes;
+    private Cadastro cadastro;
 
-    public FormPrincipal(AlunoRepository alunos, PontuacaoRepository pontuacoes)
+    public FormPrincipal(Cadastro cadastro)
     {
         InitializeComponent();
-        _alunos = alunos;
-        _pontuacoes = pontuacoes;
+        this.cadastro = cadastro;
     }
 
-    private void btnAlunos_Click(object? sender, EventArgs e)
+    private void abrir(Form janela)
     {
-        using var f = new FormAlunos(_alunos);
-        f.ShowDialog(this);
+        using (janela)
+        {
+            janela.ShowDialog(this);
+        }
     }
 
-    private void btnPontuacao_Click(object? sender, EventArgs e)
-    {
-        using var f = new FormPontuacao(_alunos, _pontuacoes);
-        f.ShowDialog(this);
-    }
-
-    private void btnMetricas_Click(object? sender, EventArgs e)
-    {
-        using var f = new FormMetricas(_alunos, _pontuacoes);
-        f.ShowDialog(this);
-    }
-
-    private void btnRanking_Click(object? sender, EventArgs e)
-    {
-        using var f = new FormRanking(_alunos, _pontuacoes);
-        f.ShowDialog(this);
-    }
-
-    private void btnRelatorio_Click(object? sender, EventArgs e)
-    {
-        using var f = new FormRelatorio(_alunos, _pontuacoes);
-        f.ShowDialog(this);
-    }
-
-    private void btnSair_Click(object? sender, EventArgs e) => Close();
+    private void btnCompetidores_Click(object? sender, EventArgs e) { abrir(new FormCompetidores(cadastro)); }
+    private void btnInscricoes_Click(object? sender, EventArgs e) { abrir(new FormInscricoes(cadastro)); }
+    private void btnNotas_Click(object? sender, EventArgs e) { abrir(new FormNotas(cadastro)); }
+    private void btnRanking_Click(object? sender, EventArgs e) { abrir(new FormRanking(cadastro)); }
+    private void btnSair_Click(object? sender, EventArgs e) { Close(); }
 }
