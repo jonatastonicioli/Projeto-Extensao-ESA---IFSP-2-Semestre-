@@ -15,14 +15,14 @@ public partial class FormInscricoes : Form
         this.cadastro = cadastro;
     }
 
-    private void FormInscricoes_Load(object? sender, EventArgs e)
+    private void FormInscricoes_Load(object? sender, EventArgs e) //Quando a tela é inicializada isso acontece: 
     {
         try
         {
-            cmbCompetidor.DataSource = cadastro.listarCompetidores();
-            cmbModalidade.DataSource = cadastro.listarModalidades();
-            cmbEdicao.DataSource = cadastro.listarEdicoes();
-            carregarGrid();
+            cmbCompetidor.DataSource = cadastro.listarCompetidores(); //ComboBox preenchidos
+            cmbModalidade.DataSource = cadastro.listarModalidades(); //ComboBox preenchidos
+            cmbEdicao.DataSource = cadastro.listarEdicoes(); //ComboBox preenchidos
+            carregarGrid(); //Datagrid atualizado
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }
@@ -54,7 +54,7 @@ public partial class FormInscricoes : Form
                                                 idDoItem(cmbEdicao.SelectedItem));
 
             cadastro.inserirInscricao(inscricao);
-            carregarGrid();
+            carregarGrid(); //atualiza o grid depois do cadastro "DPS DE APERTAR O BOTAO"
             Ferramentas.mostraAviso("Inscrição realizada com sucesso.");
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }

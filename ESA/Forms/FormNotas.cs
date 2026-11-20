@@ -16,12 +16,12 @@ public partial class FormNotas : Form
         this.cadastro = cadastro;
     }
 
-    private void FormNotas_Load(object? sender, EventArgs e)
+    private void FormNotas_Load(object? sender, EventArgs e) // Quando a tela é inicializa isso acontece
     {
         try
         {
-            cmbAvaliador.DataSource = cadastro.listarAvaliadores();
-            cmbInscricao.DataSource = cadastro.listarInscricoes();
+            cmbAvaliador.DataSource = cadastro.listarAvaliadores(); //Combobox Preenchido
+            cmbInscricao.DataSource = cadastro.listarInscricoes();  //Combobox Preenchido
             carregarInscricao();
             if (cmbInscricao.Items.Count == 0)
                 Ferramentas.mostraAviso("Nenhuma inscrição cadastrada. Faça uma inscrição primeiro.");
@@ -38,15 +38,15 @@ public partial class FormNotas : Form
     // carrega os critérios da prova e as notas da inscrição escolhida
     private void carregarInscricao()
     {
-        Item? inscricao = cmbInscricao.SelectedItem as Item;
-        if (inscricao == null)
+        Item? inscricao = cmbInscricao.SelectedItem as Item; //Lê qual inscricao esta selecionada no comboBox
+        if (inscricao == null) //Se nao existir incricao (ainda não existe inscrição cadastrada)
         {
-            tabela.Clear();
+            tabela.Clear(); // Limpa a tabela de notas e o texto da média, e sai.
             lblMedia.Text = "";
             return;
         }
 
-        carregarNotas();
+        carregarNotas(); //Se existe incricao busca as notas dessa inscrição no banco, mostra no grid e recalcula a média, a maior e a menor nota.
     }
 
     private void carregarNotas()
@@ -111,7 +111,7 @@ public partial class FormNotas : Form
             cadastro.lancarNota(nota);
 
             txtNota.Clear();
-            carregarNotas();
+            carregarNotas(); //atualiza o grid depois do notas "DPS DE APERTAR O BOTAO"
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }
@@ -130,8 +130,8 @@ public partial class FormNotas : Form
         {
             int id = Convert.ToInt32(dgvNotas.CurrentRow.Cells["Cód."].Value);
             cadastro.removerNota(id);
-            carregarNotas();
-        }
+            carregarNotas(); //atualiza o grid depois do notas "DPS DE APERTAR O BOTAO"
+        } 
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }
 }

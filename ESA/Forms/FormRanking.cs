@@ -14,13 +14,13 @@ public partial class FormRanking : Form
         this.cadastro = cadastro;
     }
 
-    private void FormRanking_Load(object? sender, EventArgs e)
+    private void FormRanking_Load(object? sender, EventArgs e) // Quando a tela é inicializa isso acontece
     {
         try
         {
-            cmbModalidade.DataSource = cadastro.listarModalidades();
-            cmbEdicao.DataSource = cadastro.listarEdicoes();
-            gerar(false);
+            cmbModalidade.DataSource = cadastro.listarModalidades(); //ComboBoxPreenchido
+            cmbEdicao.DataSource = cadastro.listarEdicoes(); //ComboBoxPreenchido
+            gerar(false); //Gera o ranking automaticamente ao entrar na tela
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }
@@ -33,11 +33,11 @@ public partial class FormRanking : Form
 
     private void gerar(bool avisar)
     {
-        Item? modalidade = cmbModalidade.SelectedItem as Item;
-        Item? edicao = cmbEdicao.SelectedItem as Item;
+        Item? modalidade = cmbModalidade.SelectedItem as Item; //Le a modalidade escolhida no combobox
+        Item? edicao = cmbEdicao.SelectedItem as Item; // Le a edicao escolhida no comboboz
         if (modalidade == null || edicao == null) return;
 
-        // uma tabela nova a cada vez (o método gerarRanking acrescenta a coluna "Pos")
+        //Pede ao Cadastro o ranking dessa combinação e mostra no grid.
         DataTable ranking = new DataTable();
         cadastro.gerarRanking(ranking, modalidade.getId(), edicao.getId());
         dgvRanking.DataSource = ranking;

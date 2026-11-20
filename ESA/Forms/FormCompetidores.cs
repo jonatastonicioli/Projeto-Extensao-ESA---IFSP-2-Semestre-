@@ -15,17 +15,17 @@ public partial class FormCompetidores : Form
         this.cadastro = cadastro;
     }
 
-    private void FormCompetidores_Load(object? sender, EventArgs e)
+    private void FormCompetidores_Load(object? sender, EventArgs e)  //Quando a tela é inicializada isso acontece:
     {
         try
         {
-            cmbInstituicao.DataSource = cadastro.listarInstituicoes();
-            carregarGrid();
+            cmbInstituicao.DataSource = cadastro.listarInstituicoes(); //Preenche os combo box
+            carregarGrid(); //atualiza o DataGrid
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }
 
-    private void carregarGrid()
+    private void carregarGrid() //mostrar inicial ou atualizar os dados do DataGridView (Usado no FormCompetidores e FormInscricoes)
     {
         cadastro.gerarRelatorioCompetidores(tabela);
         dgvCompetidores.DataSource = tabela;
@@ -67,7 +67,7 @@ public partial class FormCompetidores : Form
             cadastro.inserirCompetidor(c);
 
             limparCampos();
-            carregarGrid();
+            carregarGrid(); //atualiza o grid depois do cadastro "DPS DE APERTAR O BOTAO"
             Ferramentas.mostraAviso("Competidor '" + c.getNome() + "' cadastrado com ID " + c.getId() + ".");
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }

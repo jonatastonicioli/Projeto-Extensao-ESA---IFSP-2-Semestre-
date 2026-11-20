@@ -1,0 +1,14 @@
+O programa inicia com o program.cs criando o objeto cadastro e tentando realizar a conexao
+com o banco, se der certo passa como parametro o objeto cadastro para o form principal, se der errado
+lança uma msg de erro.
+
+A classe cadastro realiza toda a conexao com o banco do ESA, centralizando todas as querys nele
+
+A classe da tela form principal e a responsavel por abrir as demais telas e passar como parametros
+a classe cadastro, todas as telas possuem o mesmo objeto mas acessam ele por referencia
+
+Todas telas quando carregadas atualizam os combo box e o dataGrid pedindo para o "Cadastro" as listas
+de informações do banco
+Ao clicar em um botao, é lido os campos (combobox,textbox), criado um objeto de dados e passam para
+o cadastro cadastrar no banco
+Dps carregam a tabela (datagrid para mostrar o resultado)

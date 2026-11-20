@@ -1,10 +1,6 @@
--- ESA - Evaluation System Analyzer
--- Execute este script INTEIRO no MySQL (Workbench: File > Open SQL Script > raio) antes de abrir o programa.
--- Ele cria o banco "esa" com 14 tabelas e alguns dados de exemplo.
--- Atenção: ao rodar de novo, o banco "esa" inteiro é apagado e recriado (os dados são perdidos).
 
 DROP DATABASE IF EXISTS esa;
-CREATE DATABASE esa CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE esa;
 USE esa;
 
 -- =====================================================================
@@ -133,7 +129,6 @@ CREATE TABLE nota (
 
 -- =====================================================================
 --  DADOS DE EXEMPLO
---  Os competidores, inscrições e notas são cadastrados pelo programa.
 -- =====================================================================
 INSERT INTO perfil (nome) VALUES ('Administrador'), ('Competidor'), ('Avaliador');
 
@@ -174,3 +169,70 @@ SELECT m.id, e.id, CONCAT(IF(m.nome = 'Usinagem CNC', 'Peça de usinagem', 'Proj
        IF(f.nome = 'Etapa Regional', 240, 300),
        IF(f.nome = 'Etapa Regional', '2026-09-15 08:00:00', '2026-11-24 08:00:00')
 FROM modalidade m CROSS JOIN edicao e JOIN fase f ON f.id = e.fase_id;
+
+-- ---------------------------------------------------------------------
+--  COMPETIDORES, INSCRIÇÕES E NOTAS DE EXEMPLO
+--    perfil: 1 Administrador, 2 Competidor, 3 Avaliador
+--    usuario: 1 a 3 são os avaliadores; 4 a 9 são os competidores abaixo
+--    instituicao: 1 SENAI Roberto Mange, 2 IFSP Campinas, 3 SENAI Suíço-Brasileira
+--    modalidade: 1 Usinagem CNC, 2 Mecatrônica  |  edicao: 1 Regional, 2 Estadual
+--    avaliador: 1 Carlos, 2 Mariana, 3 Rafael
+-- ---------------------------------------------------------------------
+
+-- usuários dos competidores (ids 4 a 9)
+INSERT INTO usuario (nome, email, perfil_id) VALUES
+    ('Ana Beatriz Rocha', 'ana.rocha@esa.exemplo', 2),
+    ('Bruno Henrique Dias', 'bruno.dias@esa.exemplo', 2),
+    ('Camila Fernandes Torres', 'camila.torres@esa.exemplo', 2),
+    ('Diego Martins Oliveira', 'diego.oliveira@esa.exemplo', 2),
+    ('Eduarda Lopes Santos', 'eduarda.santos@esa.exemplo', 2),
+    ('Felipe Augusto Barbosa', 'felipe.barbosa@esa.exemplo', 2);
+
+-- competidores (usuario_id, instituicao_id)
+INSERT INTO competidor (usuario_id, instituicao_id) VALUES
+    (4, 1),  -- Ana Beatriz Rocha
+    (5, 1),  -- Bruno Henrique Dias
+    (6, 2),  -- Camila Fernandes Torres
+    (7, 2),  -- Diego Martins Oliveira
+    (8, 3),  -- Eduarda Lopes Santos
+    (9, 3);  -- Felipe Augusto Barbosa
+
+
+-- telefones (competidor_id, numero)
+INSERT INTO telefone (competidor_id, numero) VALUES
+    (1, '(19) 99871-2301'),
+    (2, '(19) 99872-4410'),
+    (3, '(19) 99873-5502'),
+    (4, '(19) 99874-6613'),
+    (5, '(11) 99875-7724'),
+    (6, '(11) 99876-8835');
+
+-- inscrições (competidor_id, modalidade_id, edicao_id, data)
+INSERT INTO inscricao (competidor_id, modalidade_id, edicao_id, data) VALUES
+    (1, 1, 1, '2026-08-10'),  -- inscrição 1: Ana Beatriz Rocha, Etapa Regional
+    (2, 2, 1, '2026-08-11'),  -- inscrição 2: Bruno Henrique Dias, Etapa Regional
+    (3, 1, 1, '2026-08-12'),  -- inscrição 3: Camila Fernandes Torres, Etapa Regional
+    (4, 2, 1, '2026-08-13'),  -- inscrição 4: Diego Martins Oliveira, Etapa Regional
+    (5, 1, 1, '2026-08-14'),  -- inscrição 5: Eduarda Lopes Santos, Etapa Regional
+    (6, 2, 1, '2026-08-15'),  -- inscrição 6: Felipe Augusto Barbosa, Etapa Regional
+    (1, 1, 2, '2026-10-05'),  -- inscrição 7: Ana Beatriz Rocha, Etapa Estadual
+    (2, 2, 2, '2026-10-06');  -- inscrição 8: Bruno Henrique Dias, Etapa Estadual
+
+-- notas (inscricao_id, avaliador_id, valor)
+INSERT INTO nota (inscricao_id, avaliador_id, valor) VALUES
+    (1, 1, 72.1),
+    (1, 2, 71.5),
+    (2, 3, 83.5),
+    (2, 2, 80.6),
+    (3, 1, 83.1),
+    (3, 2, 83.5),
+    (4, 3, 91.7),
+    (4, 2, 89.7),
+    (5, 1, 67.3),
+    (5, 2, 71.8),
+    (6, 3, 68.7),
+    (6, 2, 77.2),
+    (7, 1, 73.3),
+    (7, 2, 77.6),
+    (8, 3, 85.3),
+    (8, 2, 85.2);
