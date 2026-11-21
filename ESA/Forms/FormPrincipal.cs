@@ -3,7 +3,7 @@ namespace ESA.Forms;
 /// <summary>Janela principal: menu de navegação. Recebe o objeto Cadastro por referência.</summary>
 public partial class FormPrincipal : Form
 {
-    private Cadastro cadastro;
+    private Cadastro cadastro; //referencia para o objeto cadastro criado no program.cs
 
     public FormPrincipal(Cadastro cadastro)
     {

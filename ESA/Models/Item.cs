@@ -1,6 +1,7 @@
 namespace ESA.Models
 {
     /// <summary>Par (id, texto) usado para preencher ComboBox com dados do banco.</summary>
+    /// cria a classe item que e usado para realizar as buscas no banco de dados retornando id e texto
     public class Item
     {
         private int id;
@@ -18,7 +19,7 @@ namespace ESA.Models
         // o ComboBox mostra o resultado deste método
         public override string ToString()
         {
-            return texto;
+            return texto; //retorna so o texto e nao o id
         }
     }
 }

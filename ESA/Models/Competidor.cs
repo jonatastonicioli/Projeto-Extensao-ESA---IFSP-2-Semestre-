@@ -1,6 +1,9 @@
 namespace ESA.Models
 {
     /// <summary>Competidor (tabelas usuario + competidor).</summary>
+    /// 
+    ///classe acessada quando o objeto competidor é criado no pelo button click no FormCompetidores
+    ///setter (validacoes) e getters (gravar no banco)
     public class Competidor
     {
         public const int MaxCompetidores = 50;
@@ -19,7 +22,7 @@ namespace ESA.Models
             setTelefone(telefone);
         }
 
-        // ---------- getters ----------
+        // ---------- getters ---------- usado pelo Cadastro para gravar no banco
         public int getId() { return id; }
         public string getNome() { return nome; }
         public string getEmail() { return email; }
@@ -33,12 +36,12 @@ namespace ESA.Models
         public void setNome(string nome)
         {
             if (string.IsNullOrWhiteSpace(nome) || nome.Trim().Length < 2)
-                throw new RegraNegocioException("Nome inválido: informe ao menos 2 caracteres.");
+                throw new RegraNegocioException("Nome inválido: informe ao menos 2 caracteres."); //Lança um erro com mensagem personalizada
 
             foreach (char c in nome)
             {
                 if (!char.IsLetter(c) && c != ' ')
-                    throw new RegraNegocioException("Nome inválido: use apenas letras e espaços.");
+                    throw new RegraNegocioException("Nome inválido: use apenas letras e espaços."); //Lança um erro com mensagem personalizada
             }
             this.nome = nome.Trim();
         }
@@ -46,14 +49,14 @@ namespace ESA.Models
         public void setEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email) || !email.Contains('@') || !email.Contains('.'))
-                throw new RegraNegocioException("E-mail inválido.");
+                throw new RegraNegocioException("E-mail inválido."); //Lança um erro com mensagem personalizada
             this.email = email.Trim();
         }
 
         public void setInstituicaoId(int instituicaoId)
         {
             if (instituicaoId <= 0)
-                throw new RegraNegocioException("Selecione a instituição.");
+                throw new RegraNegocioException("Selecione a instituição."); //Lança um erro com mensagem personalizada
             this.instituicaoId = instituicaoId;
         }
 

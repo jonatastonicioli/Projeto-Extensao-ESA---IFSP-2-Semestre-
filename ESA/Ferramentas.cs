@@ -1,12 +1,16 @@
 using ESA.Models;
 using MySql.Data.MySqlClient;
 
+//Classe criada para exibir caixas de mensagem personalizadas para o usuário
+//Todas usam o MessageBox.Show(...)
+
 namespace ESA
 {
     public class Ferramentas
+
     {
-        // Exibe uma mensagem de erro e marca o textbox com a cor vermelha
-        public static void mostraErroTextBox(TextBox txb, string message)
+        
+        public static void mostraErroTextBox(TextBox txb, string message) // Exibe uma mensagem de erro e marca o textbox com a cor vermelha (Ex.: Cadastrar uma nota 'abc' errado)
         {
             Color cor = txb.BackColor;   // guarda a cor original de fundo do textbox
             txb.BackColor = Color.Red;   // seta a cor de fundo para vermelha
@@ -21,20 +25,20 @@ namespace ESA
             txb.Focus();
         }
 
-        // Exibe uma mensagem de erro simples (sem textbox)
-        public static void mostraErro(string message)
+       
+        public static void mostraErro(string message)  // Exibe uma mensagem de erro simples Ex.: Program.cs, ao abrir o programa com o MySQL desligado ou a senha errada
         {
             MessageBox.Show(message, "ERRO", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        // Exibe uma mensagem de aviso/informação
-        public static void mostraAviso(string message)
+        
+        public static void mostraAviso(string message) // Exibe uma mensagem de aviso/informação Ex.: ao cadastrar um competidor
         {
             MessageBox.Show(message, "ESA", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Pergunta Sim/Não ao usuário
-        public static bool confirma(string message)
+        public static bool confirma(string message) //Usado antes de remover algo Ex.: remover um competidor
         {
             return MessageBox.Show(message, "ESA", MessageBoxButtons.YesNo,
                                    MessageBoxIcon.Question) == DialogResult.Yes;

@@ -7,8 +7,8 @@ namespace ESA.Forms;
 /// <summary>RF-04, RF-05, RF-06 e RF-07: lançar notas, ver o histórico e as métricas da inscrição.</summary>
 public partial class FormNotas : Form
 {
-    private Cadastro cadastro;
-    private DataTable tabela = new DataTable();
+    private Cadastro cadastro; //referencia para o objeto cadastro criado no program.cs
+    private DataTable tabela = new DataTable(); //objeto tabela criado para atualizar o grid na funcao carregarGrid()
 
     public FormNotas(Cadastro cadastro)
     {
@@ -107,7 +107,7 @@ public partial class FormNotas : Form
                 return;
             }
 
-            Nota nota = new Nota(inscricao.getId(), avaliador.getId(), valor);
+            Nota nota = new Nota(inscricao.getId(), avaliador.getId(), valor); //Vai para o models/nota.cs fazer as validações
             cadastro.lancarNota(nota);
 
             txtNota.Clear();

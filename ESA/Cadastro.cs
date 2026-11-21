@@ -155,37 +155,37 @@ namespace ESA
         //  LISTAS PARA COMBOBOX
         //=========================================================================
 
-        public List<Item> listarInstituicoes()
+        public List<Item> listarInstituicoes() // retorna uma lista de objetos item (armazena id e texto para preencher os combobox)
         {
             return listarItens("SELECT i.id, CONCAT(i.nome, ' - ', c.nome, '/', es.sigla) FROM instituicao i " +
                                "JOIN cidade c ON c.id = i.cidade_id " +
                                "JOIN estado es ON es.id = c.estado_id ORDER BY i.nome");
         }
 
-        public List<Item> listarModalidades()
+        public List<Item> listarModalidades() // retorna uma lista de objetos item (armazena id e texto para preencher os combobox)
         {
             return listarItens("SELECT id, nome FROM modalidade ORDER BY nome");
         }
 
-        public List<Item> listarEdicoes()
+        public List<Item> listarEdicoes() //retorna uma lista de objetos item (armazena id e texto para preencher os combobox)
         {
             return listarItens("SELECT e.id, CONCAT(e.ano, ' - ', f.nome) FROM edicao e " +
                                "JOIN fase f ON f.id = e.fase_id ORDER BY e.ano DESC, e.id");
         }
 
-        public List<Item> listarCompetidores()
+        public List<Item> listarCompetidores() //retorna uma lista de objetos item (armazena id e texto para preencher os combobox)
         {
             return listarItens("SELECT c.id, u.nome FROM competidor c " +
                                "JOIN usuario u ON u.id = c.usuario_id ORDER BY u.nome");
         }
 
-        public List<Item> listarAvaliadores()
+        public List<Item> listarAvaliadores() //retorna uma lista de objetos item (armazena id e texto para preencher os combobox)
         {
             return listarItens("SELECT a.id, u.nome FROM avaliador a " +
                                "JOIN usuario u ON u.id = a.usuario_id ORDER BY u.nome");
         }
 
-        public List<Item> listarInscricoes()
+        public List<Item> listarInscricoes() // retorna uma lista de objetos item (armazena id e texto para preencher os combobox)
         {
             return listarItens(
                 "SELECT i.id, CONCAT(u.nome, ' | ', m.nome, ' | ', e.ano, ' ', f.nome) " +

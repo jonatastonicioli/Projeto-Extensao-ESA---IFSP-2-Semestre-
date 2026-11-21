@@ -6,8 +6,8 @@ namespace ESA.Forms;
 /// <summary>Inscrição de competidores em uma modalidade de uma edição.</summary>
 public partial class FormInscricoes : Form
 {
-    private Cadastro cadastro;
-    private DataTable tabela = new DataTable();
+    private Cadastro cadastro; //referencia para o objeto cadastro criado no program.cs
+    private DataTable tabela = new DataTable(); //objeto tabela criado para atualizar o grid na funcao carregarGrid()
 
     public FormInscricoes(Cadastro cadastro)
     {
@@ -27,7 +27,7 @@ public partial class FormInscricoes : Form
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }
 
-    private void carregarGrid()
+    private void carregarGrid() //funcao para recarregar o drid
     {
         cadastro.gerarRelatorioInscricoes(tabela);
         dgvInscricoes.DataSource = tabela;
@@ -49,7 +49,7 @@ public partial class FormInscricoes : Form
     {
         try
         {
-            Inscricao inscricao = new Inscricao(idDoItem(cmbCompetidor.SelectedItem),
+            Inscricao inscricao = new Inscricao(idDoItem(cmbCompetidor.SelectedItem), //vai para o Models/Inscricao.cs fazer as validações
                                                 idDoItem(cmbModalidade.SelectedItem),
                                                 idDoItem(cmbEdicao.SelectedItem));
 
@@ -62,20 +62,20 @@ public partial class FormInscricoes : Form
 
     private void btnRemover_Click(object? sender, EventArgs e)
     {
-        int id = idSelecionado();
-        if (id < 0)
+        int id = idSelecionado(); //descobre qual competidor esta selecionado
+        if (id < 0) //se nada esta selecionado
         {
             Ferramentas.mostraAviso("Selecione uma inscrição na tabela.");
             return;
         }
 
-        if (!Ferramentas.confirma("Remover a inscrição selecionada?\nAs notas dela também serão apagadas."))
+        if (!Ferramentas.confirma("Remover a inscrição selecionada?\nAs notas dela também serão apagadas.")) //pergunta para o usuario se tem certeza
             return;
 
         try
         {
-            cadastro.removerInscricao(id);
-            carregarGrid();
+            cadastro.removerInscricao(id); //chama o cadastro e remove o competidor
+            carregarGrid(); //recarrega o grid
         }
         catch (Exception ex) { Ferramentas.tratarExcecao(ex); }
     }

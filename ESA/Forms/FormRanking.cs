@@ -6,7 +6,7 @@ namespace ESA.Forms;
 /// <summary>RF-08: ranking dos competidores de uma modalidade em uma edição.</summary>
 public partial class FormRanking : Form
 {
-    private Cadastro cadastro;
+    private Cadastro cadastro; //referencia para o objeto cadastro criado no program.cs
 
     public FormRanking(Cadastro cadastro)
     {
